@@ -53,7 +53,9 @@ type Signup struct {
 
 func (s *Signup) String() string {
 	var sb strings.Builder
-	sb.WriteString(fmt.Sprintf("%d %d\n", s.Library.Id, len(*s.Books)))
+	if len(*s.Books) > 0 {
+		sb.WriteString(fmt.Sprintf("%d %d\n", s.Library.Id, len(*s.Books)))
+	}
 	for _, b := range *s.Books {
 		sb.WriteString(fmt.Sprintf("%d ", b.Id))
 	}
@@ -159,7 +161,9 @@ func (s *Solver) Solve() Solution {
 			continue
 		}
 
-		solution = append(solution, &Signup{Library: lib, Day: s.Problem.Days - s.days, Books: books})
+		if len(*books) > 0 {
+			solution = append(solution, &Signup{Library: lib, Day: s.Problem.Days - s.days, Books: books})
+		}
 
 		s.updateDays(lib)
 		s.updateBlacklist(books)
