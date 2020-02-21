@@ -199,8 +199,9 @@ func (s *Solver) pickBest() *Library {
 	}
 	if s.sortedLibraries == nil || s.lastSorted >= s.SortEvery-1 {
 		s.resort()
+	} else {
+		s.lastSorted++
 	}
-	s.lastSorted++
 	delete(s.libraries, s.sortedLibraries[s.lastSorted].Id)
 	return s.sortedLibraries[s.lastSorted]
 }
@@ -339,21 +340,35 @@ func ReadProblem(file string) *Problem {
 	return &Problem{Days: nDays, Libraries: libraries}
 }
 
+func intMax(x, y int) int {
+	return int(math.Max(float64(x), float64(y)))
+}
+
 func intMin(x, y int) int {
 	return int(math.Min(float64(x), float64(y)))
 }
 
 func init() {
 	rand.Seed(time.Now().Unix())
+
+	if len(os.Args) < 6 {
+		fmt.Printf("Not enough arguments given\nExample: go run data/a_example.txt 10 1 random best\n")
+		os.Exit(1)
+	}
 }
 
 func main() {
 	inFile := os.Args[1]
 	outFile := "submission-" + strings.Split(inFile, "/")[1]
 
+	nIterations, _ := strconv.Atoi(os.Args[2])
+	sortEvery, _ := strconv.Atoi(os.Args[3])
+	seedStrategy := os.Args[4] // "best" or "random"
+	pickStrategy := os.Args[5] // "best" or "random"
+
 	problem := ReadProblem(inFile)
-	solver := Solver{Problem: problem, SeedStrategy: "best", PickStrategy: "best", SortEvery: 10}
-	solution := solver.Run(1)
+	solver := Solver{Problem: problem, SeedStrategy: seedStrategy, PickStrategy: pickStrategy, SortEvery: intMax(1, sortEvery)}
+	solution := solver.Run(intMax(1, nIterations))
 
 	fmt.Println(solver.SolutionStats())
 
