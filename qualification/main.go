@@ -12,8 +12,8 @@ import (
 func init() {
 	rand.Seed(time.Now().Unix())
 
-	if len(os.Args) < 5 {
-		fmt.Printf("Not enough arguments given\nExample: go run *.go data/a_example.txt 10 random best\n")
+	if len(os.Args) < 6 {
+		fmt.Printf("Not enough arguments given\nExample: go run *.go data/a_example.txt 10 1 random best\n")
 		os.Exit(1)
 	}
 }
@@ -23,11 +23,12 @@ func main() {
 	outFile := "submission-" + strings.Split(inFile, "/")[1]
 
 	nIterations, _ := strconv.Atoi(os.Args[2])
-	seedStrategy := os.Args[3] // "best" or "random"
-	pickStrategy := os.Args[4] // "best" or "random"
+	sortEvery, _ := strconv.Atoi(os.Args[3])
+	seedStrategy := os.Args[4] // "best" or "random"
+	pickStrategy := os.Args[5] // "best" or "random"
 
 	problem := ReadProblem(inFile)
-	solver := Solver{Problem: problem, SeedStrategy: seedStrategy, PickStrategy: pickStrategy}
+	solver := Solver{Problem: problem, SeedStrategy: seedStrategy, PickStrategy: pickStrategy, SortEvery: intMax(1, sortEvery)}
 	solution := solver.Run(intMax(1, nIterations))
 
 	fmt.Println(solver.SolutionStats())
