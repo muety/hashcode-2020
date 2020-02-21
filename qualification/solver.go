@@ -178,7 +178,7 @@ func (s *Solver) sortLibraries() []*Library {
 	}
 
 	sort.Slice(sortedLibraries, func(i, j int) bool {
-		return sortedLibraries[i].Score(s.blacklist, s.days) > sortedLibraries[j].Score(s.blacklist, s.days)
+		return sortedLibraries[i].Score > sortedLibraries[j].Score
 	})
 
 	return sortedLibraries

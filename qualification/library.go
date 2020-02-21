@@ -1,6 +1,8 @@
 package main
 
-import "sort"
+import (
+	"sort"
+)
 
 type Books []*Book
 
@@ -14,14 +16,16 @@ type Library struct {
 	SignupDays int
 	ShipRate   int
 	Books      Books
-	BookScore  int
+	Score      float64
 }
 
 func (l *Library) Finalize() {
 	// Evaluate total book score
+	var bookScore int
 	for _, b := range l.Books {
-		l.BookScore += b.Score
+		bookScore += b.Score
 	}
+	l.Score = float64(bookScore) / float64(l.SignupDays)
 
 	// Sort books by score
 	sort.Slice(l.Books, func(i, j int) bool {
@@ -44,20 +48,4 @@ func (l *Library) Take(blacklist map[int]bool, remainingDays int) *Books {
 	booksSubset := booksFiltered[0:intMin(len(booksFiltered), nMax)]
 
 	return &booksSubset
-}
-
-func (l *Library) Score(blacklist map[int]bool, remainingDays int) float64 {
-	var bookScores int
-
-	bookSelection := l.Take(blacklist, remainingDays)
-	if bookSelection == nil {
-		return 0
-	}
-
-	for _, b := range *bookSelection {
-		bookScores += b.Score
-	}
-
-	averageDailyScore := (float64(bookScores) / float64(len(*bookSelection))) * float64(l.ShipRate)
-	return averageDailyScore / float64(l.SignupDays)
 }
