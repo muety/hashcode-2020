@@ -10,9 +10,8 @@ type Solver struct {
 	Problem         *Problem
 	SeedStrategy    string
 	PickStrategy    string
-	SortEvery       int
 	days            int
-	lastSorted      int
+	lastPicked      int
 	libraries       map[int]*Library
 	sortedLibraries []*Library
 	blacklist       map[int]bool
@@ -134,20 +133,20 @@ func (s *Solver) updateDays(lib *Library) {
 
 func (s *Solver) resort() {
 	s.sortedLibraries = s.sortLibraries()
-	s.lastSorted = 0
+	s.lastPicked = 0
 }
 
 func (s *Solver) pickBest() *Library {
-	if len(s.libraries) <= s.lastSorted {
+	if len(s.libraries) <= s.lastPicked {
 		return nil
 	}
-	if s.sortedLibraries == nil || s.lastSorted >= s.SortEvery-1 {
+	if s.sortedLibraries == nil {
 		s.resort()
 	} else {
-		s.lastSorted++
+		s.lastPicked++
 	}
-	delete(s.libraries, s.sortedLibraries[s.lastSorted].Id)
-	return s.sortedLibraries[s.lastSorted]
+	delete(s.libraries, s.sortedLibraries[s.lastPicked].Id)
+	return s.sortedLibraries[s.lastPicked]
 }
 
 func (s *Solver) pickRandom() *Library {
