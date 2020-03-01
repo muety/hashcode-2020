@@ -1,5 +1,7 @@
 # hashcode-2020
 
+![](https://anchr.io/i/9wLgJ.png)
+
 ## [Practice Round](/practice_round)
 * [Problem Statement](https://github.com/senesh-deshan/Google-Hash-Code-2020/blob/v3/Problem/slice.pdf)
 * Solution: Naive greedy approach
@@ -9,3 +11,6 @@
 * Solution: Naive greedy approach
 
 ![](https://i.ibb.co/gS6SYwt/score.jpg)
+
+## License
+MIT
