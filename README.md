@@ -2,7 +2,7 @@
 
 ![](https://anchr.io/i/9wLgJ.png)
 
-## [Practice Round](/practice_round)
+## [Practice Round](/practice)
 * [Problem Statement](https://github.com/senesh-deshan/Google-Hash-Code-2020/blob/v3/Problem/slice.pdf)
 * Solution: Naive greedy approach
 
